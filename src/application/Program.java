@@ -1,4 +1,4 @@
-package applicatiob;
+package application;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -7,6 +7,8 @@ import java.util.Scanner;
 
 import model.entities.CarRental;
 import model.entities.Vehicle;
+import model.services.BrazilTaxService;
+import model.services.RentalServices;
 
 public class Program {
 
@@ -29,7 +31,19 @@ public class Program {
 		
 		CarRental cr = new CarRental(start, finish, new Vehicle(carModel));
 
+		System.out.print("Enter the price per hour: ");
+		double pricePerHour= sc.nextDouble();
+		System.out.print("Enter the price per day:");
+		double pricePerDay= sc.nextDouble();
 		
+		RentalServices rentalService = new RentalServices(pricePerHour, pricePerDay, new BrazilTaxService());
+		
+		rentalService.processInvoice(cr);
+		
+		System.out.println("Invoice");
+		System.out.println("Basic payment: " + cr.getInvoice().getBasicPayment());
+		System.out.println("Tax: " + cr.getInvoice().getTax());		
+		System.out.println("Total payment: " + cr.getInvoice().gettotalPayment());
 		sc.close();
 	}
 
